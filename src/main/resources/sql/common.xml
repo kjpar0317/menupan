@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="common">
+	<cache />
+
+	<select id="getEmp" parameterType="String" resultType="UserBean">
+		SELECT U.USER_ID                AS id, 
+               U.EMPLOYEE_ID            AS empNo, 
+               E.EMP_NAME               AS empName,
+               E.GRADE_CD               AS gradeCd,
+               E.GRADE_NAME             AS gradeName, 
+               C.SEGMENT1               AS segment1, 
+               FM.NSSFUNC10(C.SEGMENT1) AS seg1Name, 
+               E.COST_CODE              AS segment2, 
+               E.COST_NAME              AS seg2Name,  
+               E.START_DATE             AS startDate,
+               E.WDEPT_CD               AS wdeptCd,
+               E.WDEPT_NAME             AS wdeptName,
+               E.WPLC_CD				AS wplcCd,
+               E.WPLC_NAME				AS wplcName
+          FROM SS_EMPLOYEE_V1 E, SS_COSTS_V1 C, SS_USERS_V1 U 
+         WHERE E.COST_CODE =C.COST_CODE(+)
+           AND U.EMPLOYEE_ID = E.EMP_NO(+)
+           AND U.USER_ID = #{userId} 
+	</select>
+
+</mapper>
